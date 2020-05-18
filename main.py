@@ -2,13 +2,8 @@ import pygame
 
 from pygame.locals import *
 
-SCREEN_HEIGHT = 800
-SCREEN_WIDTH = 1280
-
-FRAMES_PER_SECOND = 30
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+from constants import *
+from player import Player
 
 
 class Game(object):
@@ -37,7 +32,10 @@ class Game(object):
         pygame.display.flip()
 
     def run(self):
+        player = Player()
+
         self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(player)
 
         while self.is_running:
             self.clock.tick(FRAMES_PER_SECOND)
