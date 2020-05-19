@@ -22,10 +22,10 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(BLACK)
 
         self.rect = self.image.get_rect()
-        self.rect.center = self.position
+        self.rect.midbottom = self.position
 
     def update(self):
-        self.acceleration = Vector(0, 0)
+        self.acceleration = Vector(0, PLAYER_GRAVITY)
 
         pressed_keys = pygame.key.get_pressed()
 
@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[K_RIGHT]:
             self.acceleration.x = PLAYER_ACCELERATION
 
-        self.acceleration += self.velocity * PLAYER_FRICTION
+        self.acceleration.x += self.velocity.x * PLAYER_FRICTION
         self.velocity += self.acceleration
         self.position += .5 * self.acceleration + self.velocity
 
@@ -45,4 +45,4 @@ class Player(pygame.sprite.Sprite):
         elif self.position.x < 0:
             self.position.x = SCREEN_WIDTH
 
-        self.rect.center = self.position
+        self.rect.midbottom = self.position

@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 
 from constants import *
+from scaffold import Scaffold as Platform
 from player import Player
 
 
@@ -32,10 +33,21 @@ class Game(object):
         pygame.display.flip()
 
     def run(self):
-        player = Player()
+        self.player = Player()
 
         self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(player)
+        self.all_sprites.add(self.player)
+
+        self.platforms = pygame.sprite.Group()
+
+        platforms = [
+            Platform(0, SCREEN_HEIGHT - 40, SCREEN_WIDTH, 40),
+            Platform(SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT * 3 / 4, 100, 20),
+        ]
+
+        for platform in platforms:
+            self.all_sprites.add(platform)
+            self.platforms.add(platform)
 
         while self.is_running:
             self.clock.tick(FRAMES_PER_SECOND)
@@ -45,6 +57,15 @@ class Game(object):
 
     def update(self):
         self.all_sprites.update()
+
+        collisions = pygame.sprite.spritecollide(
+            self.player, self.platforms, False)
+
+        if collisions:
+            # Offset one pixel to avoid colliding over and over again with
+            # same object
+            self.player.position.y = collisions[0].rect.top + 1
+            self.player.velocity.y = 0
 
 
 def main():
