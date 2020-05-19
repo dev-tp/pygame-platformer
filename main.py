@@ -33,7 +33,7 @@ class Game(object):
         pygame.display.flip()
 
     def run(self):
-        self.player = Player()
+        self.player = Player(self)
 
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
@@ -57,15 +57,6 @@ class Game(object):
 
     def update(self):
         self.all_sprites.update()
-
-        collisions = pygame.sprite.spritecollide(
-            self.player, self.platforms, False)
-
-        if collisions:
-            # Offset one pixel to avoid colliding over and over again with
-            # same object
-            self.player.position.y = collisions[0].rect.top + 1
-            self.player.velocity.y = 0
 
 
 def main():
